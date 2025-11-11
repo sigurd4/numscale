@@ -5,7 +5,7 @@ edition = "2021"
 license = "MIT"
 description = "Trait for scaling numeric types by a floating point number at compile-time"
 repository = "https://github.com/sigurd4/numscale"
-categories = ["no-alloc", "rust-patterns"]
+categories = ["no-std:no-alloc", "rust-patterns"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
