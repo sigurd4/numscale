@@ -1,58 +1,46 @@
 #![cfg_attr(not(test), no_std)]
 #![feature(const_trait_impl)]
-#![feature(const_fn_floating_point_arithmetic)]
+#![feature(f16)]
+#![feature(f128)]
 
-#[const_trait]
-pub trait NumScale<F>
+pub const trait NumScale<F>
 {
     fn scale(self, x: F) -> Self;
 }
 
-impl const NumScale<f64> for f64
-{
-    fn scale(self, x: f64) -> Self
-    {
-        self*x
-    }
-}
-impl const NumScale<f32> for f64
-{
-    fn scale(self, x: f32) -> Self
-    {
-        self*x as f64
-    }
-}
-impl const NumScale<f32> for f32
-{
-    fn scale(self, x: f32) -> Self
-    {
-        self*x
-    }
-}
-impl const NumScale<f64> for f32
-{
-    fn scale(self, x: f64) -> Self
-    {
-        self*x as f32
-    }
-}
-
 macro_rules! impl_scale_num {
-    ($num:ty) => {
+    ($num:ty: $f16:ty, $f32:ty, $f64:ty, $f128:ty) => {
+        impl const NumScale<f16> for $num
+        {
+            fn scale(self, x: f16) -> Self
+            {
+                (self as $f16*x as $f16) as Self
+            }
+        }
         impl const NumScale<f32> for $num
         {
             fn scale(self, x: f32) -> Self
             {
-                (self as f32*x) as Self
+                (self as $f32*x as $f32) as Self
             }
         }
         impl const NumScale<f64> for $num
         {
             fn scale(self, x: f64) -> Self
             {
-                (self as f64*x) as Self
+                (self as $f64*x as $f64) as Self
             }
         }
+        impl const NumScale<f128> for $num
+        {
+            fn scale(self, x: f128) -> Self
+            {
+                (self as $f128*x as $f128) as Self
+            }
+        }
+    };
+    ($num:ty) => {
+        impl_scale_num!($num: f16, f32, f64, f128);
     };
 }
 
@@ -70,6 +58,11 @@ impl_scale_num!(i16);
 impl_scale_num!(i32);
 impl_scale_num!(i64);
 impl_scale_num!(i128);
+
+impl_scale_num!(f16: f16, f32, f64, f128);
+impl_scale_num!(f32: f32, f32, f64, f128);
+impl_scale_num!(f64: f64, f64, f64, f128);
+impl_scale_num!(f128: f128, f128, f128, f128);
 
 #[cfg(test)]
 mod test
