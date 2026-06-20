@@ -10,28 +10,28 @@ pub const trait NumScale<F>
 
 macro_rules! impl_scale_num {
     ($num:ty: $f16:ty, $f32:ty, $f64:ty, $f128:ty) => {
-        impl const NumScale<f16> for $num
+        const impl NumScale<f16> for $num
         {
             fn scale(self, x: f16) -> Self
             {
                 (self as $f16*x as $f16) as Self
             }
         }
-        impl const NumScale<f32> for $num
+        const impl NumScale<f32> for $num
         {
             fn scale(self, x: f32) -> Self
             {
                 (self as $f32*x as $f32) as Self
             }
         }
-        impl const NumScale<f64> for $num
+        const impl NumScale<f64> for $num
         {
             fn scale(self, x: f64) -> Self
             {
                 (self as $f64*x as $f64) as Self
             }
         }
-        impl const NumScale<f128> for $num
+        const impl NumScale<f128> for $num
         {
             fn scale(self, x: f128) -> Self
             {
