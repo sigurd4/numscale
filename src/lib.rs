@@ -67,7 +67,7 @@ impl_scale_num!(f128: f128, f128, f128, f128);
 #[cfg(test)]
 mod test
 {
-    use std::{println, fmt::Display, any::type_name};
+    use std::{any::type_name, fmt::Display, println};
 
     use crate::NumScale;
 
@@ -75,7 +75,7 @@ mod test
     fn it_works()
     {
         const N: usize = 32;
-        let x: Vec<f64> = (0..N).map(|i| i as f64/(N - 1) as f64).collect();
+        let x: Vec<f64> = (0..N).map(|i| i as f64 / (N - 1) as f64).collect();
         test_num([u8::MAX].into_iter(), &x);
         println!("u8");
         test_num([u16::MAX].into_iter(), &x);
@@ -86,7 +86,7 @@ mod test
         println!("u64");
         test_num([u128::MAX].into_iter(), &x);
         println!("u128");
-        
+
         test_num([i8::MIN, i8::MAX].into_iter(), &x);
         println!("i8");
         test_num([i16::MIN, i16::MAX].into_iter(), &x);
@@ -97,7 +97,7 @@ mod test
         println!("i64");
         test_num([i128::MIN, i128::MAX].into_iter(), &x);
         println!("i128");
-        
+
         test_num([usize::MAX].into_iter(), &x);
         println!("usize");
         test_num([isize::MIN, isize::MAX].into_iter(), &x);
